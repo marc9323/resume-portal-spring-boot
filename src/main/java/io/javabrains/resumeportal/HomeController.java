@@ -17,4 +17,15 @@ public class HomeController {
     public String edit() {
         return "edit page";
     }
+
+    // experimental
+    @GetMapping("/admin")
+    public String admin() {
+        return "<h2>ADMINS WELCOME HERE</h2>";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+       return "USERS WELCOME HERE";
+    }
 }
