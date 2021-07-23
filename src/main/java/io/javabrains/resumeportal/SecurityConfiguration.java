@@ -20,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       // auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService);
 
         // set your config on the auth object  - works as a temporary stop gap
         auth.inMemoryAuthentication().withUser("foo").password("foo").roles("USER")

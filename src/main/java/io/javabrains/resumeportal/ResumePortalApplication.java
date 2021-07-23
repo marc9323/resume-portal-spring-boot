@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackageClasses=UserRepository.class)
+//@EnableJpaRepositories(basePackageClasses=UserRepository.class)
+@EnableJpaRepositories
 public class ResumePortalApplication {
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+//	@Autowired
+//	private JdbcTemplate jdbcTemplate; //
 
 	public static void main(String[] args) {
 
