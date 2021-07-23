@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,13 +25,17 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        UserProfile profile1 = new UserProfile();
-        profile1.setId(1);
-        profile1.setUserName("einstein");
-        profile1.setDesignation("Designation");
-        profile1.setFirstName("Albert");
-        profile1.setLastName("Einstein");
-        profile1.setTheme(1);
+        Optional<UserProfile> profileOptional = userProfileRepository.findByUserName("einstein");
+        profileOptional.orElseThrow(() -> new RuntimeException("Not Found: "));
+        System.out.println("PROFILE: " + profileOptional.get());
+        UserProfile profile1 = profileOptional.get();
+//        UserProfile profile1 = new UserProfile();
+//        profile1.setId(1);
+//        profile1.setUserName("einstein");
+//        profile1.setDesignation("Designation");
+//        profile1.setFirstName("Albert");
+//        profile1.setLastName("Einstein");
+//        profile1.setTheme(1);
 
         Job job1 = new Job();
         Job job2 = new Job();
@@ -46,7 +52,12 @@ public class HomeController {
         job1.setStartDate(LocalDate.of(2019, 1, 1));
         job1.setEndDate(LocalDate.of(2021, 9, 21));
 
-        profile1.setJobs(Arrays.asList(job1, job2));
+        List<Job> jobs = new ArrayList<Job>();
+
+        profile1.getJobs().clear();
+        profile1.getJobs().add(job1);
+        profile1.getJobs().add(job2);
+      //  profile1.setJobs(jobs);
 
         userProfileRepository.save(profile1);
 
