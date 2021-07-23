@@ -6,7 +6,7 @@
 <head>
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-     <title>One Page Resume</title>
+     <title th:text="${userProfile.lastName} + 's Resume'">One Page Resume</title>
 
      <style type="text/css">
         * { margin: 0; padding: 0; }
@@ -40,11 +40,13 @@
         
             <!-- Microformats! -->
         
-            <h1 class="fn">C'thulhu</h1>
-        
+<!--            <h1 class="fn" th:text="${userProfile.firstName}">C'thulhu</h1>-->
+<!--            <h1 class="fn"><span th:text="#userProfile.firstName + ' ' + userProfile.lastName">Joe</span> <span th:text="${userProfile.lastName}">Bloggs</span></h1>-->
+
+                <h1 class="fn"><span th:text="${userProfile.firstName} + ' ' + ${userProfile.lastName}"></span></h1>
             <p>
-                Cell: <span class="tel">555-666-7777</span><br />
-                Email: <a class="email" href="mailto:greatoldone@lovecraft.com">greatoldone@lovecraft.com</a>
+                Cell: <span class="tel" th:text="${userProfile.phone}">555-666-7777</span><br />
+                Email: <a class="email" href="mailto:nowhere.com"><span th:text="${userProfile.email}">greatoldone@lovecraft.com</span></a>
             </p>
         </div>
                 
