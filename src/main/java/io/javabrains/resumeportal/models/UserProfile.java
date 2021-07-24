@@ -24,10 +24,34 @@ public class UserProfile {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "job_id")
-    List<Job> jobs = new ArrayList<>();  // one to many mapping, what happens to profile happens to jobs
+    List<Job> jobs = new ArrayList<>();
+
+    // one to many mapping, what happens to profile happens to jobs
 //    column in userprofile table for jobs is going to be job_id
     // foreign key to jobs table primary key
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @JoinColumn(name = "education_id")
+    List<Education> educations = new ArrayList<>();
+
+    @ElementCollection(targetClass=String.class)
+    List<String> skills = new ArrayList<>();
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
 
     public List<Job> getJobs() {
         return jobs;
@@ -124,6 +148,8 @@ public class UserProfile {
                 ", phone='" + phone + '\'' +
                 ", designation='" + designation + '\'' +
                 ", jobs=" + jobs +
+                ", educations=" + educations +
+                ", skills=" + skills +
                 '}';
     }
 }
