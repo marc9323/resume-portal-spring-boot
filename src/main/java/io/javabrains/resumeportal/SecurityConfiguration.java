@@ -23,9 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
 
         // set your config on the auth object  - works as a temporary stop gap
-        auth.inMemoryAuthentication().withUser("foo").password("foo").roles("USER")
-        .and().withUser("dewey").password("yogre").roles("USER")
-        .and().withUser("admin").password("admin").roles("ADMIN");
+//        auth.inMemoryAuthentication().withUser("foo").password("foo").roles("USER")
+//        .and().withUser("dewey").password("yogre").roles("USER")
+//        .and().withUser("admin").password("admin").roles("ADMIN");
 
     }
 

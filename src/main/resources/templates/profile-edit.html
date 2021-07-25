@@ -3,10 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous">
 </head>
 <body>
 
     <h1 th:text="${userId} + '\'s Profile'">profile</h1>
 
+    <div class="container">
+
+        <form action="#" th:action="@{/edit}" th:object="${userProfile}" method="post">
+            <div class="form-group">
+                <label>First Name</label>
+                <input th:field="*{firstName}" class="form-control" type="text">
+
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input th:field="*{lastName}" class="form-control" type="text">
+
+            </div>
+
+            <div class="form-group">
+                <label>Email address</label>
+                <input th:field="*{email}" type="email" class="form-control">
+
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input th:field="*{phone}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Designation</label>
+                <input th:field="*{designation}" type="text" class="form-control">
+            </div>
+
+    <!--        <p>First Name: <input type="text" th:field="*{firstName}" /></p>-->
+    <!--&lt;!&ndash;        * indicates it is a field of the $userProfile object indicated in form tag&ndash;&gt;-->
+    <!--&lt;!&ndash;        TODO:  REFACTOR - MAKE PROPER USE OF NEW HTML 5 TAGS, Upgrade to Bootstrap&ndash;&gt;-->
+    <!--        <p>Last Name: <input type="text" th:field="*{lastName}" /></p>-->
+    <!--        <p>Email: <input type="text" th:field="*{email}" /></p>-->
+    <!--        <p>Phone: <input type="text" th:field="*{phone}" /></p>-->
+    <!--        <p>Designation: <input type="text" th:field="*{designation}" /></p>-->
+            <button type="sbmit" value="Submit" />
+        </form>
+    </div>
 </body>
 </html>

@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +59,8 @@ public class HomeController {
 
 //        List<Job> jobs = new ArrayList<Job>();  ??? add again?
 
+        profile1.setPhone("312-666-7793");
+
         profile1.getJobs().clear();
         profile1.getJobs().add(job1);
         profile1.getJobs().add(job2);
@@ -95,9 +99,34 @@ public class HomeController {
         return "profile";
     }
 
-    @GetMapping("/edit")
-    public String edit() {
-        return "edit page";
+    // edit only currently logged in user - only your own profile
+    // Spring gives you the Principal - the currently logged in user
+    @GetMapping("/edit") // get the form so you can fill it out
+    public String edit(Principal principal, Model model) {
+        // get userid and add as model attribute
+        String userId = principal.getName();
+        model.addAttribute("userId", userId);
+
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not Found: " + userId));
+
+        UserProfile userProfile = userProfileOptional.get();
+        model.addAttribute("userProfile", userProfile);
+
+        return "profile-edit";
+
+//        TODO:  REFACTOR SOME OF THIS REPETITIVE CODE INTO A SERVICE METHOD OR CLASS
+    }
+
+    @PostMapping("/edit") // form post request to this same url as above and we get the model object
+    public String postEdit(Model model, Principal principal) {
+//        model.addAttribute("userId", principal.getName());
+       // return "profile-edit";
+        String userId = principal.getName();
+        // save the updated values from the form
+
+        // redirect to user profile
+        return "redirect:/view/" + userId;
     }
 
 
