@@ -116,7 +116,7 @@
                         <input type="date" class="form-control" th:field="*{educations[__${stat.index}__].endDate}" />
                     </td>
                     <td>
-                        <input type="checkbox" class="form-control" th:value="current" th:field="*{educations[__${stat.index}__].summary}" />
+                        <input class="form-control" th:value="current" th:field="*{educations[__${stat.index}__].summary}" />
                     </td>
                 </tr>
                 </tbody>
@@ -128,22 +128,10 @@
             <table class="table">
 
                 <tbody>
-                <tr th:each="education, stat: *{educations}">  <!-- stat is like an index -->
+                <tr th:each="skill, stat: *{skills}">  <!-- stat is like an index -->
                     <!--                    <p th:text="${stat}"></p>&ndash;&gt;-->
                     <td>
-                        <input type="text" class="form-control" th:field="*{educations[__${stat.index}__].college}" />
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" th:field="*{educations[__${stat.index}__].qualification}" />
-                    </td>
-                    <td>
-                        <input type="date" class="form-control" th:field="*{educations[__${stat.index}__].startDate}" />
-                    </td>
-                    <td>
-                        <input type="date" class="form-control" th:field="*{educations[__${stat.index}__].endDate}" />
-                    </td>
-                    <td>
-                        <input type="checkbox" class="form-control" th:value="current" th:field="*{educations[__${stat.index}__].summary}" />
+                        <input type="text" class="form-control" th:field="*{skills[__${stat.index}__]}" />
                     </td>
                 </tr>
                 </tbody>
@@ -152,6 +140,8 @@
             <br />
 
             <input type="submit" value="Submit" />
+
+            <br /><br />
         </form>
     </div>
 </body>
