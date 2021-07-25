@@ -1,6 +1,9 @@
 package io.javabrains.resumeportal.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -15,9 +18,16 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+   // @NotEmpty
     private String company;
+
+    // @NotEmpty
     private String designation;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
+    @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate endDate;
 
     private boolean isCurrentJob;
@@ -40,6 +50,10 @@ public class Job {
     public void setCurrentJob(boolean currentJob) {
         isCurrentJob = currentJob;
     }
+
+//    public boolean getCurrentJob() {
+//        return isCurrentJob;
+//    }
 
     public int getId() {
         return id;
