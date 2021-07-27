@@ -103,7 +103,7 @@ public class HomeController {
     // edit only currently logged in user - only your own profile
     // Spring gives you the Principal - the currently logged in user
     @GetMapping("/edit") // get the form so you can fill it out
-    public String edit(Principal principal, Model model) {
+    public String edit(Principal principal, Model model, @RequestParam(required=false) String add) {
         // get userid and add as model attribute
         String userId = principal.getName();
         model.addAttribute("userId", userId);
@@ -112,10 +112,22 @@ public class HomeController {
         userProfileOptional.orElseThrow(() -> new RuntimeException("Not Found: " + userId));
 
         UserProfile userProfile = userProfileOptional.get();
+
+//        TODO:  when something is being added do a post so that it saves
+
+        if("job".equals(add)) {
+            userProfile.getJobs().add(new Job());
+        } else if("education".equals(add)) {
+            userProfile.getEducations().add(new Education());
+        } else if("skill".equals(add)) {
+            userProfile.getSkills().add(""); // empty String
+        }
+
         model.addAttribute("userProfile", userProfile);
 
         System.out.println("/edit GET THEME: " + userProfile.getTheme());
 
+        userProfile.getJobs().add(new Job());
         return "profile-edit";
 
 //        TODO:  REFACTOR SOME OF THIS REPETITIVE CODE INTO A SERVICE METHOD OR CLASS
