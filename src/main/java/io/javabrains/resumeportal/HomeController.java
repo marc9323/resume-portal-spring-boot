@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -94,7 +91,11 @@ public class HomeController {
         profile1.getSkills().add("Technical Writing");
         profile1.getSkills().add("Casual Quantum Computing");
 
+        profile1.setTheme(1);
+
         userProfileRepository.save(profile1);
+
+        System.out.println("/ Theme: " + profile1.getTheme());
 
         return "profile";
     }
@@ -113,27 +114,47 @@ public class HomeController {
         UserProfile userProfile = userProfileOptional.get();
         model.addAttribute("userProfile", userProfile);
 
+        System.out.println("/edit GET THEME: " + userProfile.getTheme());
+
         return "profile-edit";
 
 //        TODO:  REFACTOR SOME OF THIS REPETITIVE CODE INTO A SERVICE METHOD OR CLASS
     }
 
     @PostMapping("/edit") // form post request to this same url as above and we get the model object
-    public String postEdit(Model model, Principal principal) {
+    public String postEdit(Model model, Principal principal, @ModelAttribute UserProfile userProfile) {
 //        model.addAttribute("userId", principal.getName());
        // return "profile-edit";
-        String userId = principal.getName();
-        // save the updated values from the form
+        String userName = principal.getName();
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userName);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userName));
+        UserProfile savedUserProfile = userProfileOptional.get();
+        userProfile.setId(savedUserProfile.getId());
+        userProfile.setUserName(userName);
+        userProfileRepository.save(userProfile);
 
-        // redirect to user profile
-        return "redirect:/view/" + userId;
+        System.out.println("/edit POST THEME: " + userProfile.getTheme());
+        return "redirect:/view/" + userName;
+
+        // save the updated values from the form
+//        Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
+//        userProfileOptional.orElseThrow(() -> new RuntimeException("Not Found: " + userId));
+//        UserProfile savedUserProfile = userProfileOptional.get();
+//        userProfile.setId(savedUserProfile.getId());
+//        userProfile.setUserName(userId); // could also: savedUserProfile.getName...
+//
+//        userProfileRepository.save(userProfile);
+//        // redirect to user profile
+//        System.out.println("USERID: "  + userId);
+//
+//        return "redirect:/view/" + userId;
     }
 
 
     @GetMapping("/view/{userId}") // better name would be 'userName' as opposed to id - we expect a string!
     public String view(@PathVariable String userId, Model model) {
         Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
-        System.out.println("USER PROFILE: " + userProfileOptional.toString());
+//        System.out.println("USER PROFILE: " + userProfileOptional.toString());
         userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
 
 
@@ -146,6 +167,7 @@ public class HomeController {
 
 //        return "profile-templates/" + userProfile.getT
 //        return "profile-templates/" + userProfile.get().getTheme() + "/index";
+        System.out.println("VIEW/ : " + userProfile.getTheme());
         return "profile-templates/" + userProfile.getTheme() + "/index";
     }
 }
