@@ -3,12 +3,11 @@ package io.javabrains.resumeportal.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.FormatStyle;
 
 @Entity
 @Table
@@ -27,7 +26,7 @@ public class Job {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     private boolean isCurrentJob;
@@ -41,6 +40,10 @@ public class Job {
 
     public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
+    }
+
+    public void addResponsibility(String responsibility){
+        responsibilities.add(responsibility);
     }
 
     public boolean isCurrentJob() {
@@ -95,14 +98,32 @@ public class Job {
         this.endDate = endDate;
     }
 
+//    public LocalDate getFormattedStartDate() {
+//        // return startDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+//        System.out.println("getFormattedStartDate()");
+//        System.out.println("of: " + startDate);
+//        System.out.println("To: " + startDate.format(DateTimeFormatter.ofPattern("MMM yyyy")));
+//       // return startDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+//        return startDate;
+//    }
+
     public String getFormattedStartDate() {
-        // return startDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
-        return startDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+      //  return startDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(startDate);
     }
 
     public String getFormattedEndDate() {
-        return endDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+       // return endDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(startDate);
     }
+
+//    public LocalDate getFormattedEndDate() {
+//        System.out.println("getFormattedEndDate()");
+//        System.out.println("of: " + endDate);
+//        System.out.println("To: " + endDate.format(DateTimeFormatter.ofPattern("MMM yyyy")));
+//        return endDate;
+//       // return endDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+//    }
 
     @Override
     public String toString() {

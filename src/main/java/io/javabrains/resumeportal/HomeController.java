@@ -105,7 +105,7 @@ public class HomeController {
     @GetMapping("/edit") // get the form so you can fill it out
     public String edit(Principal principal, Model model, @RequestParam(required=false) String add) {
         // get userid and add as model attribute
-        String userId = principal.getName();
+        String userId= principal.getName();
         model.addAttribute("userId", userId);
 
         Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
@@ -131,6 +131,31 @@ public class HomeController {
         return "profile-edit";
 
 //        TODO:  REFACTOR SOME OF THIS REPETITIVE CODE INTO A SERVICE METHOD OR CLASS
+    }
+
+    // TODO:  DELETE REQUEST FOR THE LINKS
+    @GetMapping("/delete")
+    public String delete(Model model, Principal principal, @RequestParam String type, @RequestParam int index) {
+        String userId = principal.getName();
+       // model.addAttribute("userId", userId);
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not Found: " + userId));
+        UserProfile userProfile = userProfileOptional.get();
+
+        if("job".equals(type)) {
+            userProfile.getJobs().remove(index);
+        } else if("education".equals(type)) {
+            userProfile.getEducations().remove(index);
+        } else if("skill".equals(type)) {
+            userProfile.getSkills().remove(index);
+        }
+
+        System.out.println("USER PROFILE INDEX:" + index);
+
+        userProfileRepository.save(userProfile);
+
+        // redirect back to the edit form
+        return "redirect:/edit";
     }
 
     @PostMapping("/edit") // form post request to this same url as above and we get the model object
@@ -164,7 +189,8 @@ public class HomeController {
 
 
     @GetMapping("/view/{userId}") // better name would be 'userName' as opposed to id - we expect a string!
-    public String view(@PathVariable String userId, Model model) {
+    public String view(Principal principal, @PathVariable String userId, Model model) {
+        System.out.println("@GetMapping  /view/userId");
         Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
 //        System.out.println("USER PROFILE: " + userProfileOptional.toString());
         userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
@@ -180,6 +206,7 @@ public class HomeController {
 //        return "profile-templates/" + userProfile.getT
 //        return "profile-templates/" + userProfile.get().getTheme() + "/index";
         System.out.println("VIEW/ : " + userProfile.getTheme());
+        System.out.println("userId: " + userId);
         return "profile-templates/" + userProfile.getTheme() + "/index";
     }
 }

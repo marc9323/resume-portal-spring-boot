@@ -71,6 +71,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Current Position?</th>
+<!--                        <th>Delete</th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -91,6 +92,8 @@
                     <td>
                         <input type="checkbox" class="form-control" th:value="current" th:field="*{jobs[__${stat.index}__].currentJob}" />
                     </td>
+                    <td><a th:href="@{'./delete?type=job&index=' + ${stat.index}}">Delete</a></td>
+                    
                 </tr>
                 </tbody>
             </table>
