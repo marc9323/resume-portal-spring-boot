@@ -114,6 +114,7 @@ public class HomeController {
         UserProfile userProfile = userProfileOptional.get();
 
 //        TODO:  when something is being added do a post so that it saves
+        // TODO: problem is 'Add Job', 'Add Education', etc.  use ajax
 
         if("job".equals(add)) {
             userProfile.getJobs().add(new Job());
@@ -156,6 +157,8 @@ public class HomeController {
 
         // redirect back to the edit form
         return "redirect:/edit";
+
+        // return "redirect:/view/" + userName;
     }
 
     @PostMapping("/edit") // form post request to this same url as above and we get the model object
@@ -171,6 +174,7 @@ public class HomeController {
         userProfileRepository.save(userProfile);
 
         System.out.println("/edit POST THEME: " + userProfile.getTheme());
+        System.out.println("RESPONSIBILITIES: " + userProfile.getJobs().get(1).getResponsibilities());
         return "redirect:/view/" + userName;
 
         // save the updated values from the form
@@ -191,6 +195,13 @@ public class HomeController {
     @GetMapping("/view/{userId}") // better name would be 'userName' as opposed to id - we expect a string!
     public String view(Principal principal, @PathVariable String userId, Model model) {
         System.out.println("@GetMapping  /view/userId");
+        // does the userId match the principal? set model attribute for currentUsersProfile
+        if(principal != null && principal.getName() != "") {
+            boolean currentUsersProfile = principal.getName().equals(userId);
+            model.addAttribute("currentUsersProfile", currentUsersProfile);
+        }
+
+        String userName = principal.getName();
         Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
 //        System.out.println("USER PROFILE: " + userProfileOptional.toString());
         userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
